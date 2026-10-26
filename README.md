@@ -146,6 +146,6 @@ var_backtest_synthetic.png, backtest_synthetic_output.txt   synthetic backtest s
 
 ## AI assistance
 
-This project was developed with help from an AI assistant (Claude). Edit this section to describe your own contributions accurately, and check your programme's policy on AI-assisted work.
+AI tools were used to support parts of the development and documentation process. I am responsible for reviewing the code, understanding the underlying mathematical and financial concepts, and validating the implementation and results.
 
-*Educational use only; not investment advice.*
+*For educational purposes only. Not investment advice.*
