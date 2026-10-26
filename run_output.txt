@@ -1,0 +1,67 @@
+==============================================================================
+NIFTY 50 MONTE CARLO | snapshot: close of 2026-10-21 | expiry 2026-10-27
+==============================================================================
+Spot 22,811.35 | Futures 22,745.00 (basis -66.35 pts, -0.291%) | India VIX 15.70 | r 5.57% | lot 65
+Time to expiry: 6 calendar days = 0.01644 years (ACT/365)
+WARNING: this snapshot is 4 days old (today = 2026-10-25). Treat all output as a historical snapshot; add a newer entry to market_snapshots.json.
+Volatility: ONE flat India VIX for every strike (a proxy, not each option's implied vol).
+Sources: https://www.jmfinancialservices.in/market-news-and-insights/1738101
+
+1) EUROPEAN OPTIONS | Monte Carlo (1,000,000 paths, antithetic) vs Black-76
+   Last two columns: Black-76 at VIX -/+ 2 vol points = how much the flat-vol assumption alone can move the price.
+Type  Strike |  Black-76       MC     SE |err|/SE |  vol-2pt vol+2pt
+------------------------------------------------------------------------------
+call   22250 |    526.02   526.12  0.110     0.95 |   514.41  539.56
+call   22500 |    329.54   329.64  0.168     0.61 |   309.95  349.87
+call   22750 |    180.02   180.11  0.200     0.47 |   156.77  203.26
+call   23000 |     83.57    83.67  0.164     0.64 |    63.96  103.97
+call   23250 |     32.31    32.41  0.107     0.98 |    20.41   46.18
+put    22250 |     31.47    31.57  0.101     0.96 |    19.86   45.01
+put    22500 |     84.76    84.86  0.159     0.60 |    65.18  105.10
+put    22750 |    185.01   185.10  0.191     0.45 |   161.76  208.26
+put    23000 |    338.33   338.43  0.155     0.63 |   318.73  358.74
+put    23250 |    536.84   536.94  0.098     0.99 |   524.94  550.72
+   |err|/SE below ~2 means the MC price agrees with the exact price.
+   No option chain supplied (--option-chain): no comparison with real premiums is made.
+
+2) WHERE CAN NIFTY GO BY 2026-10-27? (100,000 paths, 600 steps = 100/calendar day, ACT/365 time)
+   Level | P(finish beyond) exact N(d2) | P(touch) MC  +/-SE analytic
+------------------------------------------------------------------------------
+  23050+ |            25.2%       25.1% |       55.6%   0.2%    55.6%
+  23250+ |            13.6%       13.5% |       29.6%   0.1%    29.5%
+  23500+ |             5.2%        5.1% |       11.1%   0.1%    11.0%
+  22600- |            37.8%       37.9% |       68.9%   0.1%    68.9%
+  22350- |            19.4%       19.5% |       36.0%   0.2%    36.1%
+  22150- |             9.4%        9.6% |       17.9%   0.1%    17.9%
+   Risk-neutral probabilities (they price options; they are not forecasts).
+   P(touch) MC uses the BGK barrier correction; 'analytic' is the exact continuous-monitoring value.
+
+   MONITORING-FREQUENCY CONVERGENCE for the 23250+ and 22350- levels
+   steps/day |             P(touch 23250) |             P(touch 22350)
+             | discrete     BGK analytic | discrete     BGK analytic
+           1 |    20.4%   30.4%    29.5% |    26.6%   37.4%    36.1%
+           5 |    24.6%   29.4%    29.5% |    31.3%   36.5%    36.1%
+          25 |    27.2%   29.5%    29.5% |    34.0%   36.3%    36.1%
+         100 |    28.4%   29.5%    29.5% |    34.9%   36.1%    36.1%
+         400 |    29.0%   29.6%    29.5% |    35.7%   36.2%    36.1%
+   Discrete monitoring understates touch probability and converges to the analytic value as steps
+   increase. The BGK correction removes most of the gap (it can overshoot slightly at 1 step/day).
+
+3) MONTE CARLO VaR | long 1 lot Nifty futures (notional Rs 1,478,425) | sigma = flat India VIX
+ Horizon      Shocks |    VaR 95%   VaR 99%  CVaR 99%  exact 99%
+------------------------------------------------------------------
+     1d       Normal |     23,976    33,754    38,605     33,698
+     1d   Student-t4 |     21,901    38,274    52,497        n/a
+     5d       Normal |     53,055    74,321    84,806     74,480
+     5d   Student-t4 |     51,422    79,015    99,108        n/a
+   These numbers describe the MODEL, not the real market: volatility is constant (no clustering,
+   no jumps) and equal to the VIX proxy. Fat tails alone do not fix that. Accuracy is only
+   tested if you supply history (--history), below.
+
+4) HISTORY CHECK | skipped: no --history file. No claim is made about how accurate
+   these VaR figures are on real Nifty returns. Run var_backtest.py --history <csv>.
+
+LIMITS: flat volatility (no skew/smile), constant volatility (no GARCH/clustering), no jumps,
+risk-neutral not real-world probabilities, VIX is a 30-day measure applied to a 6-day option, futures basis noise.
+
+Saved figure -> /mnt/user-data/outputs/nifty_mc/nifty_mc_results.png

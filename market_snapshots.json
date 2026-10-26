@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "note": "Each snapshot is a dated end-of-day record. Add a new entry to refresh; the code picks the latest as_of by default. Values were transcribed from the cited pages, not downloaded by API, so re-check against NSE before relying on them.",
+    "volatility_note": "india_vix is NSE's 30-day implied-volatility index (percent). It is used as a flat proxy for the volatility of every strike. It is NOT the implied volatility of any individual option.",
+    "missing_for_latest_close": "Friday 23 Oct 2026: Nifty closed at 22,600.00 (https://www.business-standard.com/markets/news/stock-market-live-october-23-nse-bse-sensex-today-nifty50-gift-nifty-crude-oil-prices-jio-ipo-q2-results-today-126102300078_1.html) and Business Standard reported India VIX rose about 6%, but the VIX level and the October futures close were not retrieved, so no 23 Oct snapshot is included."
+  },
+  "snapshots": [
+    {
+      "as_of": "2026-10-07",
+      "expiry": "2026-10-27",
+      "spot": 22603.05,
+      "futures": 22618.40,
+      "india_vix": 13.92,
+      "risk_free": 0.055747,
+      "risk_free_as_of": "2026-10-07",
+      "lot_size": 65,
+      "sources": {
+        "spot_futures_vix": "https://www.jmfinancialservices.in/market-news-and-insights/1735600",
+        "risk_free": "RBI 91-day T-bill auction cut-off yield, 7 Oct 2026 = 5.5747% (https://plutusias.com/?p=279438)",
+        "lot_size": "https://www.kotakneo.com/bulletins/lot-size-changes-in-index-derivatives-effective-december-30-2025/"
+      }
+    },
+    {
+      "as_of": "2026-10-21",
+      "expiry": "2026-10-27",
+      "spot": 22811.35,
+      "futures": 22745.00,
+      "india_vix": 15.70,
+      "risk_free": 0.055747,
+      "risk_free_as_of": "2026-10-07",
+      "lot_size": 65,
+      "sources": {
+        "spot_futures_vix": "https://www.jmfinancialservices.in/market-news-and-insights/1738101",
+        "risk_free": "Latest dated 91-day T-bill cut-off yield found = 5.5747% (7 Oct 2026, https://plutusias.com/?p=279438); later weekly auctions not retrieved. Over a 6-day expiry the price impact of a few bp is negligible.",
+        "lot_size": "https://www.kotakneo.com/bulletins/lot-size-changes-in-index-derivatives-effective-december-30-2025/"
+      }
+    }
+  ]
+}
